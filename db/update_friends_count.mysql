@@ -1,0 +1,11 @@
+UPDATE
+  users u
+SET
+  friends_count=(
+    SELECT
+      count(*)
+    FROM
+      friendships f
+    WHERE
+      u.id=f.user_id
+  );

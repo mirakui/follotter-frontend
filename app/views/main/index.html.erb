@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+  <title>follotter</title>
+</head>
+<body>
+<div class="header">
+  <h1>follotter</h1>
+  <div class="nav">
+  </div>
+</div>
+<div class="section">
+  <div class="subsection">
+    <h2>twitter user (ja)</h2>
+    <p>現在 <%= @user_count %> 人</p>
+  </div>
+  <div class="subsection">
+    <h2>followers count ranking (ja)</h2>
+    <table>
+      <% @most_befollowed.each do |user| -%>
+      <tr>
+        <td><a><img src="<%= user[:profile_image_url] %>" alt="<%= user[:screen_name] %>"/></a></td>
+        <td><%= user[:screen_name] %></td>
+        <td><%= user[:followers_count] %></td>
+      </tr>
+      <% end -%>
+    </table>
+  </div>
+  <div class="subsection">
+    <h2>friends count ranking (ja)</h2>
+    <table>
+      <% @most_followed.each do |user| -%>
+      <tr>
+        <td><a><img src="<%= user[:profile_image_url] %>" alt="<%= user[:screen_name] %>"/></a></td>
+        <td><%= user[:screen_name] %></td>
+        <td><%= user[:friends_count] %></td>
+      </tr>
+      <% end -%>
+    </table>
+  </div>
+</div>
+<div class="footer">
+</div>
+</body>
+</html>
