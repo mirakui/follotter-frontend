@@ -1,0 +1,21 @@
+<% if params[:id] -%>
+<script language="javascript">
+$(function() {
+  $("form:first").submit();
+});
+</script>
+<% end -%>
+<div class="subsection cofriends">
+  <h2>cofriends</h2>
+  <p id="error"></p>
+  <p>
+    <form>
+      <input type="text" <%= params[:id] ? %Q(value="#{params[:id].tr('-',' ')}") : ''%>/>
+      <input type="submit" />
+      <input type="button" value="exec"/>
+      <span class="progressBar" id="progress">0%</span>
+      <a class="permalink">[permalink]</a>
+    </form>
+  </p>
+  <div id="output"></div>
+</div>
