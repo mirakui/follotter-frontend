@@ -72,6 +72,72 @@ LIMIT
       users
     end
 
+    def update_language(param)
+      q = <<-QUERY
+UPDATE
+  users
+SET
+  language=?
+WHERE
+  screen_name=?
+      QUERY
+      st = prepare(q)
+      st.execute(param[:language], param[:screen_name])
+    end
+
+    def friends(param)
+      q = <<-QUERY
+SELECT
+  u2.screen_name,
+  u2.profile_image_url
+FROM
+  users u1, users u2, friendships f
+WHERE
+  u1.id = f.user_id
+  AND
+  u2.id = f.friend_id
+  AND
+  u1.screen_name=?
+      QUERY
+      st = prepare(q)
+      st.execute(param[:screen_name])
+
+      users = []
+      st.each do |u|
+        users.push({
+          :id=>u[0],
+          :icon=>u[1].to_mini
+        })
+      end
+      users
+    end
+
+    def followers(param)
+      q = <<-QUERY
+SELECT
+  u1.screen_name,
+  u1.profile_image_url
+FROM
+  users u1, users u2, friendships f
+WHERE
+  u1.id = f.user_id
+  AND
+  u2.id = f.friend_id
+  AND
+  u2.screen_name=?
+      QUERY
+      st = prepare(q)
+      st.execute(param[:screen_name])
+
+      users = []
+      st.each do |u|
+        users.push({
+          :id=>u[0],
+          :icon=>u[1].to_mini
+        })
+      end
+      users
+    end
   end
 end
 
