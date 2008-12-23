@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require File.dirname(__FILE__) + '/../config/boot'
+require 'db'
+
+db = Follotter::DB.new
+
+ARGV.each do |arg|
+  puts arg
+  db.update_language :language=>nil, :screen_name=>arg
+end
+
+db.close
