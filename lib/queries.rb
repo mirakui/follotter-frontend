@@ -109,7 +109,7 @@ WHERE
           :icon=>u[1].to_mini
         })
       end
-      raise "Invalid user: '#{param[:screen_name]}'" unless users.count > 0
+      raise "Invalid user: '#{param[:screen_name]}'" unless users.length > 0
       users
     end
 
