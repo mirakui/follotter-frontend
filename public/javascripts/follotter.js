@@ -89,7 +89,7 @@ $(document).ready(function() {
           });
         }
         $(".cofriends .permalink")
-        .attr('href', '/main/cofriends/'+query.join('-'))
+        .attr('href', '/follotter/cofriends/'+query.join('-'))
         .show();
         $(".cofriends input[@type=submit]")
         .attr('disabled', false)
