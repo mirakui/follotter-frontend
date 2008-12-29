@@ -11,8 +11,8 @@ $(function() {
   <p>
     <form>
       <input type="text" <%= params[:id] ? %Q(value="#{params[:id].tr('-',' ')}") : ''%>/>
-      <input type="submit" />
-      <input type="button" value="exec"/>
+      <input type="submit"/>
+      <img src="images/loading.gif" id="loading"/>
       <span class="progressBar" id="progress">0%</span>
       <a class="permalink">[permalink]</a>
     </form>

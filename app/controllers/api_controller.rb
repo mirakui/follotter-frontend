@@ -37,4 +37,18 @@ class ApiController < ApplicationController
     render :json => result.to_json
   end
 
+  def cofriends
+    ids = params[:id]
+    begin 
+      ids = ids.split(/-/)
+      db = Follotter::DB.new
+      cofriends = db.cofriends :screen_names=>ids
+      result = {'cofriends'=>cofriends}
+      db.close
+    rescue => e
+      result = {'error'=>e.to_s}
+    end
+    render :json => result.to_json
+  end
+
 end

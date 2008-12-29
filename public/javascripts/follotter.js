@@ -1,9 +1,8 @@
-//var API_BASE_URI = 'http://mirakui.tsuyabu.in/follotter/';
-var API_BASE_URI = 'http://tsuyabu.in:4000/api';
+var API_BASE_URI = 'http://mirakui.tsuyabu.in/follotter/api';
+//var API_BASE_URI = 'http://localhost:4000/api';
 
 function Queue(capacity, callback) {
-  this.queue = [];
-  this.count = 0;
+  this.init();
   this.capacity = capacity;
   this.progress_callback = callback || function(){};
 }
@@ -22,19 +21,30 @@ Queue.prototype.pop = function(i) {
   }
 }
 
+Queue.prototype.init = function() {
+  this.queue = [];
+  this.count = 0;
+}
+
 $(document).ready(function() {
   $("#progress").progressBar(0, {
     showText: false,
-    boxImage: "../../images/progressbar.gif",
-    barImage: "../../images/progressbg_red.gif"})
+    boxImage: "images/progressbar.gif",
+    barImage: "images/progressbg_red.gif"})
   .hide();
   $(".cofriends .permalink").hide();
+  $("#loading").hide();
+  //$("input:first").attr('disabled', 'disabled');
+  $("input:first").attr('disabled', false);
 
   $(".cofriends form").submit(function() {
-  //$("input[@type=button]:first").click(function() {
     $(".cofriends .permalink").hide();
-    $(".cofriends input[@type=submit]").toggle();
-    $("#progress").progressBar(0).toggle();
+    $(".cofriends input[@type=submit]")
+    .hide()
+    .attr('disabled', true);
+    $("#progress").progressBar(0).show();
+    $("#loading").show();
+    $("input:first").attr('disabled', true);
 
     query = $("input:first").val();
     query = (query.match(/\s*([^\s].*[^\s])\s*/) || [])[1];
@@ -64,7 +74,7 @@ $(document).ready(function() {
           .appendTo('#output');
           box = $('<div>')
           .appendTo('#output');
-          $.each(uniq[i], function(j) {
+          $.each(uniq[i]||[], function(j) {
             u = uniq[i][j];
             $('<a>')
             .attr('href', 'http://twitter.com/'+u.id)
@@ -80,17 +90,31 @@ $(document).ready(function() {
         }
         $(".cofriends .permalink")
         .attr('href', '/main/cofriends/'+query.join('-'))
-        .toggle();
-        $(".cofriends input[@type=submit]").toggle();
-        $("#progress").toggle().progressBar(0);
+        .show();
+        $(".cofriends input[@type=submit]")
+        .attr('disabled', false)
+        .show();
+        $("#progress").hide().progressBar(0);
         $("#error").hide();
+        $("#loading").hide();
+        $("input:first").attr('disabled', false);
       }
     });
 
     $.each(query, function(i) {
       queue.push(i);
       load_friends(query[i], function(res) {
-        friends_array.push(res['friends']);
+        if (res['friends']) {
+          friends_array.push(res['friends']);
+        }
+        else if (res['error']) {
+          print_error(res['error']);
+          queue.init();
+        }
+        else {
+          print_error('unexpected error');
+          queue.init();
+        }
         queue.pop(i);
       });
     });
@@ -102,8 +126,12 @@ $(document).ready(function() {
 function print_error(msg) {
   $("#error").text(msg).show();
   $(".cofriends .permalink").hide();
-  $(".cofriends input[@type=submit]").show();
+  $(".cofriends input[@type=submit]")
+  .attr('disabled', false)
+  .show();
   $("#progress").hide().progressBar(0);
+  $("#loading").hide();
+  $("input:first").attr('disabled', false);
 }
 
 function validate_ids(ids) {

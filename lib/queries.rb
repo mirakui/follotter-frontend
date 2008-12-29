@@ -109,6 +109,7 @@ WHERE
           :icon=>u[1].to_mini
         })
       end
+      raise "Invalid user: '#{param[:screen_name]}'" unless users.count > 0
       users
     end
 
@@ -138,11 +139,51 @@ WHERE
       end
       users
     end
+
+    def cofriends(screen_names)
+      users = []
+      screen_names.each do |screen_name|
+        f = friends(:screen_name=>screen_name)
+        users.concat f
+      end
+      cofriends = users.to_common
+    end
   end
 end
 
 class String
   def to_mini
     self.gsub(/_normal\./, '_mini.')
+  end
+end
+
+class Array
+  def to_common
+    common = []
+    users = self.sort {|a,b| a[:id]<=>b[:id]}
+    count = 0
+    _user = nil
+    user  = nil
+    users.each do |user|
+      if _user && _user[:id] == user[:id]
+        count += 1
+      else
+        if common[count]
+          common[count].push user
+        else
+          common[count] = [user]
+        end
+        count = 0
+      end
+      _user = user
+    end
+    if count>0
+      if common[count]
+        common[count].push user
+      else
+        common[count] = [user]
+      end
+    end
+    common
   end
 end
