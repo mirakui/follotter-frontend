@@ -1,5 +1,6 @@
-var API_BASE_URI = 'http://mirakui.tsuyabu.in/follotter/api';
-//var API_BASE_URI = 'http://localhost:4000/api';
+var BASE_URI = RAILS_ENV=='production' ?
+  'http://mirakui.tsuyabu.in/follotter/' :
+  'http://localhost:4000/';
 
 function Queue(capacity, callback) {
   this.init();
@@ -29,12 +30,11 @@ Queue.prototype.init = function() {
 $(document).ready(function() {
   $("#progress").progressBar(0, {
     showText: false,
-    boxImage: "images/progressbar.gif",
-    barImage: "images/progressbg_red.gif"})
+    boxImage: BASE_URI+"images/progressbar.gif",
+    barImage: BASE_URI+"images/progressbg_red.gif"})
   .hide();
   $(".cofriends .permalink").hide();
-  $("#loading").hide();
-  //$("input:first").attr('disabled', 'disabled');
+  $("#loading").attr('src', BASE_URI+"images/loading.gif").hide();
   $("input:first").attr('disabled', false);
 
   $(".cofriends form").submit(function() {
@@ -149,7 +149,7 @@ function validate_ids(ids) {
 }
 
 function load_friends(id, func_loaded) {
-  url = API_BASE_URI + '/friends/' + id;
+  url = BASE_URI + 'api/friends/' + id;
   //console.debug(url);
   $.getJSON(url, function(json) {
     func_loaded(json);
