@@ -1,6 +1,4 @@
-var BASE_URI = RAILS_ENV=='production' ?
-  'http://mirakui.tsuyabu.in/follotter/' :
-  'http://localhost:4000/';
+var QUERY_COUNT_MAX = 10;
 
 function Queue(capacity, callback) {
   this.init();
@@ -30,11 +28,11 @@ Queue.prototype.init = function() {
 $(document).ready(function() {
   $("#progress").progressBar(0, {
     showText: false,
-    boxImage: BASE_URI+"images/progressbar.gif",
-    barImage: BASE_URI+"images/progressbg_red.gif"})
+    boxImage: BASE_URI+"/images/progressbar.gif",
+    barImage: BASE_URI+"/images/progressbg_red.gif"})
   .hide();
   $(".cofriends .permalink").hide();
-  $("#loading").attr('src', BASE_URI+"images/loading.gif").hide();
+  $("#loading").attr('src', BASE_URI+"/images/loading.gif").hide();
   $("input:first").attr('disabled', false);
 
   $(".cofriends form").submit(function() {
@@ -59,6 +57,14 @@ $(document).ready(function() {
     invalid_ids = validate_ids(query);
     if (invalid_ids.length>0) {
       print_error('invalid id: '+invalid_ids.join(', '));
+      return false;
+    }
+    if (query.length>QUERY_COUNT_MAX) {
+      print_error('too much ids(max:'+QUERY_COUNT_MAX+')');
+      return false;
+    }
+    if (query.length<2) {
+      print_error('please input more than 2 twitter-id');
       return false;
     }
 
@@ -149,7 +155,7 @@ function validate_ids(ids) {
 }
 
 function load_friends(id, func_loaded) {
-  url = BASE_URI + 'api/friends/' + id;
+  url = BASE_URI + '/api/friends/' + id;
   //console.debug(url);
   $.getJSON(url, function(json) {
     func_loaded(json);

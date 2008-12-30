@@ -6,16 +6,33 @@ $(function() {
 </script>
 <% end -%>
 <div class="subsection cofriends">
-  <h2>cofriends</h2>
+  <h2><a href="<%= @base_uri %>/cofriends">cofriends</a></h2>
   <p id="error"></p>
   <p>
     <form>
       <input type="text" <%= params[:id] ? %Q(value="#{params[:id].tr('-',' ')}") : ''%>/>
-      <input type="submit"/>
-      <img src="images/loading.gif" id="loading"/>
+      <input type="submit" value="search"/>
+      <img src="<%= @base_uri %>/images/loading.gif" id="loading"/>
       <span class="progressBar" id="progress">0%</span>
       <a class="permalink">[permalink]</a>
     </form>
+    <p class="usage-short">2つ以上の twitter id を半角スペース区切りで入力し、「search」を押せば、共通の友人（followings）が検索されます。<br/>例: 「<a href="<%= @base_uri %>/cofriends/mirakui-ono_matope-tohae">mirakui ono_matope tohae</a>」</p>
   </p>
-  <div id="output"></div>
+  <div id="output">
+    <div class="usage-long">
+      <h3>これは何？</h3>
+      <ul>
+        <li><a href="http://twitter.com/">twitter</a>上での共通の友人を検索するためのツールです。</li>
+        <li>2つ以上の twitter id を半角スペース区切りで入力し、「search」を押せば、共通の followings が検索されます。</li>
+        <li>「friends of N people」は、指定されたユーザのうち、N人がフォローしているという意味です。</li>
+        <li>例えば、知らない人にフォローされたときに、自分とその人の共通の友人を検索すれば、その人が自分とどういう繋がりがある人なのかをおおまかに知ることができるかもしれません。</li>
+      </ul>
+      <h3>注意事項</h3>
+      <ul>
+        <li>検索には時間がかかる場合があります。</li>
+        <li>アイコン画像を変えたばかりの人は、画像が出ない場合があります。何日かすると出るようになったりします。</li>
+        <li>現在、日本語を話すユーザのみが対象です。日本語話すユーザなのにうまくいかなかった場合は <a href="http://twitter.com/mirakui">@mirakui</a> まで。</li>
+      </ul>
+    </div>
+  </div>
 </div>

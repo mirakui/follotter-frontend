@@ -1,18 +1,28 @@
+<%
+  action = params[:action]
+  title = 'follotter' + (action!='index' ? '::'+action : '')
+-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
-  <title>follotter</title>
+  <title><%= title %></title>
   <script language="javascript">
     RAILS_ENV = "<%= RAILS_ENV %>";
+    BASE_URI  = "<%= @base_uri %>";
   </script>
+  <!--
+  <%= stylesheet_link_tag 'http://yui.yahooapis.com/combo?2.6.0/build/reset-fonts/reset-fonts.css' %>
+  -->
+  <%= stylesheet_link_tag 'follotter' %>
   <%= javascript_include_tag 'jquery-1.2.6.min' %>
   <%= javascript_include_tag 'jquery.progressbar.min' %>
   <%= javascript_include_tag 'follotter' %>
 </head>
-<body>
+<body class="follotter">
+
 <div class="header">
-  <h1>follotter</h1>
+  <h1><a href="<%= @base_uri %>">follotter</a></h1>
   <div class="nav">
   </div>
 </div>
@@ -20,6 +30,7 @@
 <%= yield -%>
 </div>
 <div class="footer">
+  presented by <a href="http://twitter.com/mirakui"><img src="<%= @base_uri %>/images/twitter_panda_mini.png"/> mirakui</a>
 </div>
 </body>
 </html>
