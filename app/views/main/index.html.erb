@@ -3,8 +3,8 @@
 follotter は、<a href="http://twitter.com/">twitter</a> における followers （あなたをフォローしている人） と friends （あなたがフォローしている人） のデータを用いた統計サービスです。
 follotter では現在、以下のサービスを提供しています。
 <ul>
-<li><a href="<%= @base_uri %>/cofriends">cofriends</a><br/>
+<li><a href="<%= ENV['BASE_URI'] %>/cofriends">cofriends</a><br/>
     共通の友人検索</li>
-<li><a href="<%= @base_uri %>/ranking">ranking</a><br/>
+<li><a href="<%= ENV['BASE_URI'] %>/ranking">ranking</a><br/>
     フォロー数・フォロワー数ランキング（重い）</li>
 </div>

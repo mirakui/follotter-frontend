@@ -6,17 +6,17 @@ $(function() {
 </script>
 <% end -%>
 <div class="subsection cofriends">
-  <h2><a href="<%= @base_uri %>/cofriends">cofriends</a></h2>
+  <h2><a href="<%= ENV['BASE_URI'] %>/cofriends">cofriends</a></h2>
   <p id="error"></p>
   <p>
     <form>
       <input type="text" <%= params[:id] ? %Q(value="#{params[:id].tr('-',' ')}") : ''%>/>
       <input type="submit" value="search"/>
-      <img src="<%= @base_uri %>/images/loading.gif" id="loading"/>
+      <img src="<%= ENV['BASE_URI'] %>/images/loading.gif" id="loading"/>
       <span class="progressBar" id="progress">0%</span>
       <a class="permalink">[permalink]</a>
     </form>
-    <p class="usage-short">2つ以上の twitter id を半角スペース区切りで入力し、「search」を押せば、共通の友人（followings）が検索されます。<br/>例: 「<a href="<%= @base_uri %>/cofriends/mirakui-ono_matope-tohae">mirakui ono_matope tohae</a>」</p>
+    <p class="usage-short">2つ以上の twitter id を半角スペース区切りで入力し、「search」を押せば、共通の友人（followings）が検索されます。<br/>例: 「<a href="<%= ENV['BASE_URI'] %>/cofriends/mirakui-ono_matope-tohae">mirakui ono_matope tohae</a>」</p>
   </p>
   <div id="output">
     <div class="usage-long">
