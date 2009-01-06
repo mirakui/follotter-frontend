@@ -8,10 +8,11 @@ class MainController < ApplicationController
   end
 
   def ranking
-    db = Follotter::DB.new
-    @user_count      = db.users_count
-    @most_followed   = db.most_followed(:limit=>10)
-    @most_befollowed = db.most_befollowed(:limit=>10)
-    db.close
+    cache_path = File.join RAILS_ROOT, 'cache', 'cache.yml'
+    cache = YAML.load_file(cache_path);
+    @users_count     = cache['users_count']
+    @most_followed   = cache['most_followed'] || []
+    @most_befollowed = cache['most_befollowed'] || []
+    @updated_at      = File.mtime(cache_path)
   end
 end
