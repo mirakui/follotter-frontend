@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+BASE_DIR   = File.join File.dirname(__FILE__), '..'
+CACHE_DIR  = File.join BASE_DIR,  'cache'
+LIB_DIR    = File.join BASE_DIR,  'lib'
+LOG_DIR    = File.join BASE_DIR,  'log'
+CACHE_PATH = File.join CACHE_DIR, 'cache.yml'
+LOG_PATH   = File.join LOG_DIR,   'cache.log'
+$: << LIB_DIR
+require 'db'
+require 'pp'
+require 'gena/yaml_waml'
+require 'logger'
+
+log = Logger.new LOG_PATH, 'monthly'
+log.level = Logger::DEBUG
+begin
+  log.info 'Cache start'
+  db = Follotter::DB.new
+  cache = {}
+  cache['users_count']      = db.users_count
+  log.info 'users_count finished'
+  cache['most_followed']   = db.most_followed(:limit=>10)
+  log.info 'most_followed finished'
+  cache['most_befollowed'] = db.most_befollowed(:limit=>10)
+  log.info 'most_befollowed finished'
+  open(CACHE_PATH, 'w') {|f| f.write cache.to_yaml}
+  log.info 'cache wrote'
+
+  db.close
+  log.info 'Cache finished'
+rescue e1
+  log.error e.message + ':' + e.backtrace.join("\n")
+  log.error 'Cache aborted'
+rescue Object => e2
+  log.error e2.inspect
+  log.error 'Cache aborted'
+end
+
